@@ -110,3 +110,6 @@ cat("Minimum global active power on day time of weekdays", weekdays_day_min_A,
     "\nMaximum global reactive power on day time of weekends", weekends_day_max_B,
     "\nMinimum global reactive power on night time of weekends", weekends_night_max_B,
     "\nMaximum global reactive power on night time of weekends", weekends_night_max_B)
+
+AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson")
+AB
