@@ -1,14 +1,10 @@
 ## Set-up
-getwd()
 setwd("~/Desktop/sfu/CMPT-318/Assignment1")
 dataset <- read.table("Group_Assignment_1_Dataset.txt", header=TRUE, sep=",")
 
 dataset$Time <- as.POSIXlt(dataset$Time, format="%H:%M:%S")
 dataset$Date <- as.POSIXlt(dataset$Date, format = "%d/%m/%Y")
-start_of_week12 <- as.POSIXlt("19/3/2007", format="%d/%m/%Y")
-end_of_week12 <- as.POSIXlt("25/3/2007", format="%d/%m/%Y")
-
-dataset_week12 <- subset(dataset, dataset$Date >= start_of_week12 & dataset$Date <= end_of_week12)
+dataset_week12 <- subset(dataset, dataset$Date >=  as.POSIXlt("19/3/2007", format="%d/%m/%Y") & dataset$Date <= as.POSIXlt("25/3/2007", format="%d/%m/%Y"))
 
 mode <- function(x, na.rm = FALSE) {
   if(na.rm){ 
@@ -26,19 +22,19 @@ mode <- function(x, na.rm = FALSE) {
   geometric_mean_A <- exp(mean(log(dataset_week12$Global_active_power), na.rm = TRUE))
   median_A <- mean(dataset_week12$Global_active_power, na.rm = TRUE)
   mode_A <- mode(dataset_week12$Global_active_power, na.rm=TRUE)
-  standard_deviation_A <- sd(ourData$Global_active_power, na.rm = TRUE)
+  standard_deviation_A <- sd(dataset_week12$Global_active_power, na.rm = TRUE)
   
   arithmetic_mean_B <- mean(dataset_week12$Global_reactive_power, na.rm = TRUE)
   geometric_mean_B <- exp(mean(log(dataset_week12$Global_reactive_power), na.rm = TRUE))
   median_B <- mean(dataset_week12$Global_reactive_power, na.rm = TRUE)
   mode_B <- mode(dataset_week12$Global_reactive_power, na.rm=TRUE)
-  standard_deviation_B <- sd(ourData$Global_reactive_power, na.rm = TRUE)
+  standard_deviation_B <- sd(dataset_week12$Global_reactive_power, na.rm = TRUE)
   
   arithmetic_mean_C <- mean(dataset_week12$Voltage, na.rm = TRUE)
   geometric_mean_C <- exp(mean(log(dataset_week12$Voltage), na.rm = TRUE))
   median_C <- mean(dataset_week12$Voltage, na.rm = TRUE)
   mode_C <- mode(dataset_week12$Voltage, na.rm=TRUE)
-  standard_deviation_C <- sd(ourData$Voltage, na.rm = TRUE)
+  standard_deviation_C <- sd(dataset_week12$Voltage, na.rm = TRUE)
   
   cat("Arithmetic mean of global active power", arithmetic_mean_A,
       "\nGeometric mean of global active power", geometric_mean_A,
@@ -63,10 +59,10 @@ mode <- function(x, na.rm = FALSE) {
   start_of_daytime <- as.POSIXlt("06:00:00", format = "%H:%M:%S")
   end_of_daytime <- as.POSIXlt("18:00:00", format = "%H:%M:%S")
   
-  weekdays_day <- subset(dataset_week12, days_of_the_week != 0 & days_of_the_week != 6 & dataset_week12$Time >= start_of_daytime & dataset_week12$Time <= end_of_daytime)
-  weekdays_night <- subset(dataset_week12, days_of_the_week != 0 & days_of_the_week != 6 & (dataset_week12$Time < start_of_daytime | dataset_week12$Time > end_of_daytime))
-  weekends_day <- subset(dataset_week12, (days_of_the_week == 0 | days_of_the_week == 6) & dataset_week12$Time >= start_of_daytime & dataset_week12$Time <= end_of_daytime)
-  weekends_night <- subset(dataset_week12, (days_of_the_week == 0 | days_of_the_week == 6) & (dataset_week12$Time < start_of_daytime| dataset_week12$Time > end_of_daytime))
+  weekdays_day <- subset(dataset_week12, days_of_the_week != 0 & days_of_the_week != 6 & dataset_week12$Time >= as.POSIXlt("06:00:00", format = "%H:%M:%S") & dataset_week12$Time <= as.POSIXlt("18:00:00", format = "%H:%M:%S"))
+  weekdays_night <- subset(dataset_week12, days_of_the_week != 0 & days_of_the_week != 6 & (dataset_week12$Time < as.POSIXlt("06:00:00", format = "%H:%M:%S") | dataset_week12$Time > as.POSIXlt("18:00:00", format = "%H:%M:%S")))
+  weekends_day <- subset(dataset_week12, (days_of_the_week == 0 | days_of_the_week == 6) & dataset_week12$Time >= as.POSIXlt("06:00:00", format = "%H:%M:%S") & dataset_week12$Time <= as.POSIXlt("18:00:00", format = "%H:%M:%S"))
+  weekends_night <- subset(dataset_week12, (days_of_the_week == 0 | days_of_the_week == 6) & (dataset_week12$Time < as.POSIXlt("06:00:00", format = "%H:%M:%S")| dataset_week12$Time > as.POSIXlt("18:00:00", format = "%H:%M:%S")))
   
   # min & max for weekdays day & night (Global active power)
   weekdays_day_min_A <- min(weekdays_day$Global_active_power, na.rm =TRUE)
@@ -111,5 +107,16 @@ mode <- function(x, na.rm = FALSE) {
       "\nMaximum global reactive power on day time of weekends", weekends_day_max_B,
       "\nMinimum global reactive power on night time of weekends", weekends_night_max_B,
       "\nMaximum global reactive power on night time of weekends", weekends_night_max_B)
+
+### 2
+  # Compute the correlation for each disjoint pair of the responses, A, B, C, D, E, F and G, using Pearson’s sample correlation coefficient
+  dataset <- read.table("Group_Assignment_1_Dataset.txt", header = TRUE, sep = ",")
+  dataset$Date <- as.POSIXlt(dataset$Date, format = "%d/%m/%Y")
+  dataset$Time <- as.POSIXlt(dataset$Time, format = "%H:%M:%S")
+  dataset_week12 <- subset(dataset, dataset$Date >= as.POSIXlt("29/1/2007", format = "%d/%m/%Y") & dataset1$Date <= as.POSIXlt("4/2/2007", format = "%d/%m/%Y"))##week 5 data (starts on Jan 29, 2007 - Feb 4 2007 inclusive)
+  
+  #AB (Global_active_power, Global_reactive_power)
+  AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson")
+  AB
   
 
