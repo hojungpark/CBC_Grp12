@@ -121,6 +121,12 @@ mode <- function(x, na.rm = FALSE) {
   AE <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_1, method = "pearson")
   AF <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_2, method = "pearson")
   AG <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_3, method = "pearson")
+  
+  BC <- cor(dataset_week12$Global_reactive_power, dataset_week12$Voltage, method = "pearson")
+  BD <- cor(dataset_week12$Global_reactive_power, dataset_week12$Global_intensity, method = "pearson")
+  BE <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_1, method = "pearson")
+  BF <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_2, method = "pearson")
+  BG <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_3, method = "pearson")
 
   cat("Pearson correlation between:",
       "\nGlobal active power & Global reactive power", AB,
@@ -128,4 +134,10 @@ mode <- function(x, na.rm = FALSE) {
       "\nGlobal active power & Global intensity", AD,
       "\nGlobal active power & Submetering 1", AE,
       "\nGlobal active power & Submetering 2", AF,
-      "\nGlobal active power & Submetering 3", AG)
+      "\nGlobal active power & Submetering 3", AG,
+      
+      "\nGlobal reactive power & Voltage", BC,
+      "\nGlobal reactive power & Global intensity", BD,
+      "\nGlobal reactive power & Submetering 1", BE,
+      "\nGlobal reactive power & Submetering 2", BF,
+      "\nGlobal reactive power & Submetering 3", BG)
