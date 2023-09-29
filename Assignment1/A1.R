@@ -110,23 +110,32 @@ mode <- function(x, na.rm = FALSE) {
 
 ### 2
   # Compute the correlation for each disjoint pair of the responses, A, B, C, D, E, F and G, using Pearson’s sample correlation coefficient
-  dataset <- read.table("Group_Assignment_1_Dataset.txt", header = TRUE, sep = ",")
-  dataset$Date <- as.POSIXlt(dataset$Date, format = "%d/%m/%Y")
-  dataset$Time <- as.POSIXlt(dataset$Time, format = "%H:%M:%S")
-  dataset_week12 <- subset(dataset, dataset$Date >= as.POSIXlt("29/1/2007", format = "%d/%m/%Y") & dataset$Date <= as.POSIXlt("4/2/2007", format = "%d/%m/%Y"))##week 5 data (starts on Jan 29, 2007 - Feb 4 2007 inclusive)
+  AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson", use="na.or.complete")
+  AC <- cor(dataset_week12$Global_active_power, dataset_week12$Voltage, method = "pearson", use="na.or.complete")
+  AD <- cor(dataset_week12$Global_active_power, dataset_week12$Global_intensity, method = "pearson", use="na.or.complete")
+  AE <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+  AF <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+  AG <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
   
-  AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson")
-  AC <- cor(dataset_week12$Global_active_power, dataset_week12$Voltage, method = "pearson")
-  AD <- cor(dataset_week12$Global_active_power, dataset_week12$Global_intensity, method = "pearson")
-  AE <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_1, method = "pearson")
-  AF <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_2, method = "pearson")
-  AG <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_3, method = "pearson")
+  BC <- cor(dataset_week12$Global_reactive_power, dataset_week12$Voltage, method = "pearson", use="na.or.complete")
+  BD <- cor(dataset_week12$Global_reactive_power, dataset_week12$Global_intensity, method = "pearson",use="na.or.complete")
+  BE <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+  BF <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+  BG <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
   
-  BC <- cor(dataset_week12$Global_reactive_power, dataset_week12$Voltage, method = "pearson")
-  BD <- cor(dataset_week12$Global_reactive_power, dataset_week12$Global_intensity, method = "pearson")
-  BE <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_1, method = "pearson")
-  BF <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_2, method = "pearson")
-  BG <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_3, method = "pearson")
+  CD <- cor(dataset_week12$Voltage, dataset_week12$Global_intensity, method = "pearson", use="na.or.complete")
+  CE <- cor(dataset_week12$Voltage, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+  CF <- cor(dataset_week12$Voltage, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+  CG <- cor(dataset_week12$Voltage, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+  
+  DE <- cor(dataset_week12$Global_intensity, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+  DF <- cor(dataset_week12$Global_intensity, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+  DG <- cor(dataset_week12$Global_intensity, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+  
+  EF <- cor(dataset_week12$Sub_metering_1, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+  EG <- cor(dataset_week12$Sub_metering_1, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+  
+  FG <- cor(dataset_week12$Sub_metering_2, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
 
   cat("Pearson correlation between:",
       "\nGlobal active power & Global reactive power", AB,
@@ -140,4 +149,17 @@ mode <- function(x, na.rm = FALSE) {
       "\nGlobal reactive power & Global intensity", BD,
       "\nGlobal reactive power & Submetering 1", BE,
       "\nGlobal reactive power & Submetering 2", BF,
-      "\nGlobal reactive power & Submetering 3", BG)
+      "\nGlobal reactive power & Submetering 3", BG, 
+      
+      "\nVoltage & Global intensity", CD,
+      "\nVoltage & Submetering 1", CE,
+      "\nVoltage & Submetering 2", CF,
+      "\nVoltage & Submetering 3", CG,
+      
+      "\nGlobal intensity & Submetering 1", DE,
+      "\nGlobal intensity & Submetering 2", DF,
+      "\nGlobal intensity & Submetering 3", DG,
+      
+      "\nSubmetering 1 & Submetering 2", EF,
+      "\nSubmetering 1 & Submetering 3", EG,
+      "\nSubmetering 2 & Submetering 3", FG)
