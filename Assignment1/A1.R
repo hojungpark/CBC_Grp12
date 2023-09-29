@@ -1,7 +1,7 @@
 ## Set-up
 setwd("~/Desktop/sfu/CMPT-318/Assignment1")
-dataset <- read.table("Group_Assignment_1_Dataset.txt", header=TRUE, sep=",")
 
+dataset <- read.table("Group_Assignment_1_Dataset.txt", header=TRUE, sep=",")
 dataset$Time <- as.POSIXlt(dataset$Time, format="%H:%M:%S")
 dataset$Date <- as.POSIXlt(dataset$Date, format = "%d/%m/%Y")
 dataset_week12 <- subset(dataset, dataset$Date >=  as.POSIXlt("19/3/2007", format="%d/%m/%Y") & dataset$Date <= as.POSIXlt("25/3/2007", format="%d/%m/%Y"))
@@ -113,10 +113,19 @@ mode <- function(x, na.rm = FALSE) {
   dataset <- read.table("Group_Assignment_1_Dataset.txt", header = TRUE, sep = ",")
   dataset$Date <- as.POSIXlt(dataset$Date, format = "%d/%m/%Y")
   dataset$Time <- as.POSIXlt(dataset$Time, format = "%H:%M:%S")
-  dataset_week12 <- subset(dataset, dataset$Date >= as.POSIXlt("29/1/2007", format = "%d/%m/%Y") & dataset1$Date <= as.POSIXlt("4/2/2007", format = "%d/%m/%Y"))##week 5 data (starts on Jan 29, 2007 - Feb 4 2007 inclusive)
+  dataset_week12 <- subset(dataset, dataset$Date >= as.POSIXlt("29/1/2007", format = "%d/%m/%Y") & dataset$Date <= as.POSIXlt("4/2/2007", format = "%d/%m/%Y"))##week 5 data (starts on Jan 29, 2007 - Feb 4 2007 inclusive)
   
-  #AB (Global_active_power, Global_reactive_power)
   AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson")
-  AB
-  
+  AC <- cor(dataset_week12$Global_active_power, dataset_week12$Voltage, method = "pearson")
+  AD <- cor(dataset_week12$Global_active_power, dataset_week12$Global_intensity, method = "pearson")
+  AE <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_1, method = "pearson")
+  AF <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_2, method = "pearson")
+  AG <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_3, method = "pearson")
 
+  cat("Pearson correlation between:",
+      "\nGlobal active power & Global reactive power", AB,
+      "\nGlobal active power & Voltage", AC,
+      "\nGlobal active power & Global intensity", AD,
+      "\nGlobal active power & Submetering 1", AE,
+      "\nGlobal active power & Submetering 2", AF,
+      "\nGlobal active power & Submetering 3", AG)
