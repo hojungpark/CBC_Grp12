@@ -1,4 +1,6 @@
 ## Set-up
+library(ggplot2)
+library(ggcorrplot)
 setwd("~/Desktop/sfu/CMPT-318/Assignment1")
 
 dataset <- read.table("Group_Assignment_1_Dataset.txt", header=TRUE, sep=",")
@@ -163,3 +165,9 @@ mode <- function(x, na.rm = FALSE) {
       "\nSubmetering 1 & Submetering 2", EF,
       "\nSubmetering 1 & Submetering 3", EG,
       "\nSubmetering 2 & Submetering 3", FG)
+  # correlation analysis in terms of correlation matrix, reference: https://www.youtube.com/watch?v=E3De2A73ako
+  A_to_G <- dataset_week12[,-c(1,2)]
+  correlation_matrix<- round(cor(A_to_G, use="na.or.complete"), 4)
+  ggcorrplot::ggcorrplot(correlation_matrix, lab = TRUE, digits = 4)
+  
+  
