@@ -1,7 +1,9 @@
 ## Set-up
+library(ggplot2)
+library(ggcorrplot)
 setwd("~/Desktop/sfu/CMPT-318/Assignment1")
-dataset <- read.table("Group_Assignment_1_Dataset.txt", header=TRUE, sep=",")
 
+dataset <- read.table("Group_Assignment_1_Dataset.txt", header=TRUE, sep=",")
 dataset$Time <- as.POSIXlt(dataset$Time, format="%H:%M:%S")
 dataset$Date <- as.POSIXlt(dataset$Date, format = "%d/%m/%Y")
 dataset_week12 <- subset(dataset, dataset$Date >=  as.POSIXlt("19/3/2007", format="%d/%m/%Y") & dataset$Date <= as.POSIXlt("25/3/2007", format="%d/%m/%Y"))
@@ -40,22 +42,19 @@ cat("Arithmetic mean of global active power", arithmetic_mean_A,
     "\nGeometric mean of global active power", geometric_mean_A,
     "\nMedian of global active power", median_A,
     "\nMode of global active power", mode_A,
-    "\nStandard Deviation of global active power", standard_deviation_A,
+    "\nStandard Deviation of global active power", standard_deviation_A, "\n" , 
     
     "\nArithmetic mean of global reactive power", arithmetic_mean_B,
     "\nGeometric mean of global reactive power", geometric_mean_B,
     "\nMedian of global reactive power", median_B,
     "\nMode of global reactive power", mode_B,
-    "\nStandard Deviation of global reactive power", standard_deviation_B,
-    
+    "\nStandard Deviation of global reactive power", standard_deviation_B, "\n",
+
     "\nArithmetic mean of voltage", arithmetic_mean_C,
     "\nGeometric mean of voltage", geometric_mean_C,
     "\nMedian of voltage", median_C,
     "\nMode of voltage", mode_C,
-    "\nStandard Deviation of voltage", standard_deviation_C)
-
-
-
+    "\nStandard Deviation of voltage", standard_deviation_C, "\n")
 
 ## For features A and B compute the min and max values on weekdays and weekend days during day hours and night hours respectively
 days_of_the_week <- as.POSIXlt(dataset_week12$Date, format = "%d/%m/%Y")$wday #wday is the numeric weekday (0-6 starting from Sunday)
@@ -111,5 +110,63 @@ cat("Minimum global active power on day time of weekdays", weekdays_day_min_A,
     "\nMinimum global reactive power on night time of weekends", weekends_night_max_B,
     "\nMaximum global reactive power on night time of weekends", weekends_night_max_B)
 
-AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson")
-AB
+### 2
+# Compute the correlation for each disjoint pair of the responses, A, B, C, D, E, F and G, using Pearson’s sample correlation coefficient
+AB <- cor(dataset_week12$Global_active_power, dataset_week12$Global_reactive_power, method = "pearson", use="na.or.complete")
+AC <- cor(dataset_week12$Global_active_power, dataset_week12$Voltage, method = "pearson", use="na.or.complete")
+AD <- cor(dataset_week12$Global_active_power, dataset_week12$Global_intensity, method = "pearson", use="na.or.complete")
+AE <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+AF <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+AG <- cor(dataset_week12$Global_active_power, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+
+BC <- cor(dataset_week12$Global_reactive_power, dataset_week12$Voltage, method = "pearson", use="na.or.complete")
+BD <- cor(dataset_week12$Global_reactive_power, dataset_week12$Global_intensity, method = "pearson",use="na.or.complete")
+BE <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+BF <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+BG <- cor(dataset_week12$Global_reactive_power, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+
+CD <- cor(dataset_week12$Voltage, dataset_week12$Global_intensity, method = "pearson", use="na.or.complete")
+CE <- cor(dataset_week12$Voltage, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+CF <- cor(dataset_week12$Voltage, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+CG <- cor(dataset_week12$Voltage, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+
+DE <- cor(dataset_week12$Global_intensity, dataset_week12$Sub_metering_1, method = "pearson", use="na.or.complete")
+DF <- cor(dataset_week12$Global_intensity, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+DG <- cor(dataset_week12$Global_intensity, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+
+EF <- cor(dataset_week12$Sub_metering_1, dataset_week12$Sub_metering_2, method = "pearson", use="na.or.complete")
+EG <- cor(dataset_week12$Sub_metering_1, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+
+FG <- cor(dataset_week12$Sub_metering_2, dataset_week12$Sub_metering_3, method = "pearson", use="na.or.complete")
+
+cat("Pearson correlation between:",
+    "\nGlobal active power & Global reactive power", AB,
+    "\nGlobal active power & Voltage", AC,
+    "\nGlobal active power & Global intensity", AD,
+    "\nGlobal active power & Submetering 1", AE,
+    "\nGlobal active power & Submetering 2", AF,
+    "\nGlobal active power & Submetering 3", AG,
+    
+    "\nGlobal reactive power & Voltage", BC,
+    "\nGlobal reactive power & Global intensity", BD,
+    "\nGlobal reactive power & Submetering 1", BE,
+    "\nGlobal reactive power & Submetering 2", BF,
+    "\nGlobal reactive power & Submetering 3", BG, 
+    
+    "\nVoltage & Global intensity", CD,
+    "\nVoltage & Submetering 1", CE,
+    "\nVoltage & Submetering 2", CF,
+    "\nVoltage & Submetering 3", CG,
+    
+    "\nGlobal intensity & Submetering 1", DE,
+    "\nGlobal intensity & Submetering 2", DF,
+    "\nGlobal intensity & Submetering 3", DG,
+    
+    "\nSubmetering 1 & Submetering 2", EF,
+    "\nSubmetering 1 & Submetering 3", EG,
+    "\nSubmetering 2 & Submetering 3", FG)
+# correlation analysis in terms of correlation matrix, reference: https://www.youtube.com/watch?v=E3De2A73ako
+A_to_G <- dataset_week12[,-c(1,2)]
+correlation_matrix<- round(cor(A_to_G, use="na.or.complete"), 4)
+ggcorrplot::ggcorrplot(correlation_matrix, lab = TRUE, digits = 4)
+
